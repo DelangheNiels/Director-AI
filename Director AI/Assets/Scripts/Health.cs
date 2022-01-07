@@ -23,6 +23,10 @@ public class Health : MonoBehaviour
 
     void Kill()
     {
+        if(this.tag == "Enemy")
+        {
+            DirectorAIBehavior.Instance.DecreaseEnemiesAlive();
+        }
         Destroy(gameObject);
     }
 }

@@ -5,7 +5,50 @@ using UnityEngine;
 
 public class DirectorAIBehavior : MonoBehaviour
 {
-   List<Spawnpoint> _spawnPoints = new List<Spawnpoint>();
+
+    #region SINGLETON
+    private static DirectorAIBehavior _instance;
+
+    public static DirectorAIBehavior Instance
+    {
+        get
+        {
+            if (_instance == null && !_applicationQuiting)
+            {
+                _instance = FindObjectOfType<DirectorAIBehavior>();
+                if (_instance == null)
+                {
+                    GameObject newObject = new GameObject("Singleton_DirectorAI");
+                    _instance = newObject.AddComponent<DirectorAIBehavior>();
+                }
+            }
+
+            return _instance;
+        }
+    }
+
+    private static bool _applicationQuiting = false;
+
+    public void OnApplicationQuit()
+    {
+        _applicationQuiting = true;
+    }
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+    #endregion
+
+    List<Spawnpoint> _spawnPoints = new List<Spawnpoint>();
     PlayerCharacter _playerCharacter = null;
     [SerializeField] int minimumAmountOfSpawnedEnemiesRange;
     [SerializeField] int maxAmountOfSpawnedEnemiesRange;
@@ -36,5 +79,11 @@ public class DirectorAIBehavior : MonoBehaviour
                 Debug.Log("Spawned enemy: " + _spawnedEnemies);
             }
         }
+    }
+
+    public void DecreaseEnemiesAlive()
+    {
+        _spawnedEnemies = _spawnedEnemies - 1;
+        Debug.Log("dead");
     }
 }
