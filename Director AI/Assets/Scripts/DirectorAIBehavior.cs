@@ -57,6 +57,14 @@ public class DirectorAIBehavior : MonoBehaviour
     enum State { buildUp, peak, relax };
     private State _state = State.buildUp;
 
+    float _spawnTimer = 5.0f;
+    [SerializeField]float _spawnTime = 5.0f;
+
+    float _difficultyChangeTimer = 0.0f;
+    float _difficultyChangeTime = 10.0f;
+
+    float _oldIntensity = 0.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -69,21 +77,68 @@ public class DirectorAIBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(_spawnTimer < _spawnTime)
+        {
+            _spawnTimer += Time.deltaTime;
+        }
+
         if(_state == State.buildUp)
         {
-            while (_spawnedEnemies < _amountOfEnemiesToSpawn)
-            {
-                int index = Random.Range(0, _spawnPoints.Count);
-                _spawnedEnemies++;
-                _spawnPoints[index].Spawn();
-                Debug.Log("Spawned enemy: " + _spawnedEnemies);
-            }
+            SpawnEnemies();
+            StateChange();
+            ChangeDifficulty();
         }
     }
 
     public void DecreaseEnemiesAlive()
     {
         _spawnedEnemies = _spawnedEnemies - 1;
-        Debug.Log("dead");
+    }
+
+    private void SpawnEnemies()
+    {
+        if (_spawnTimer >= _spawnTime)
+        {
+            while (_spawnedEnemies < _amountOfEnemiesToSpawn)
+            {
+                int index = Random.Range(0, _spawnPoints.Count);
+                _spawnedEnemies++;
+                _spawnPoints[index].Spawn();
+                
+            }
+            _spawnTimer = 0;
+        }
+    }
+
+    private void StateChange()
+    {
+        if (_playerCharacter.Intensity >= 0.80f)
+        {
+            _state = State.peak;
+            Debug.Log("In peak");
+        }
+    }
+
+    private void ChangeDifficulty()
+    {
+        _difficultyChangeTimer += Time.deltaTime;
+        if(_difficultyChangeTimer >= _difficultyChangeTime)
+        {
+            Debug.Log("old: " + _oldIntensity + " new: " + _playerCharacter.Intensity);
+            if(_playerCharacter.Intensity - _oldIntensity < 0.20)
+            {
+                _amountOfEnemiesToSpawn += 8;
+                Debug.Log("Increase difficulty");
+            }
+
+            else
+            {
+                _amountOfEnemiesToSpawn -= 4;
+                Debug.Log("Decrease difficulty");
+            }
+
+            _oldIntensity = _playerCharacter.Intensity;
+            _difficultyChangeTimer = 0;
+        }
     }
 }

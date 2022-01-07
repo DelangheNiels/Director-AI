@@ -12,8 +12,15 @@ public class PlayerCharacter : BasicCharacter
     const string SECONDARY_FIRE = "SecondaryFire";
     const string RELOAD = "Reload";
 
-
     private Plane _cursorMovementPlane;
+
+    float _intensity = 0.0f;
+
+    public float Intensity
+    {
+        get { return _intensity; }
+        set { _intensity = value; }
+    }
 
     protected override void Awake()
     {
@@ -25,6 +32,7 @@ public class PlayerCharacter : BasicCharacter
     {
         HandleMovementInput();
         HandleFireInput();
+        
     }
 
     void HandleMovementInput()

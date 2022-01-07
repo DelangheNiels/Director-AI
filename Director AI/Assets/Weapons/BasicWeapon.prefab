@@ -323,8 +323,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletTemplate: {fileID: 4882651421112614707, guid: 24f812fda1a699a4dbb3209b8f0a5377, type: 3}
-  _clipSize: 50
-  _fireRate: 10
+  _clipSize: 30
+  _fireRate: 8
   _fireSockets:
   - {fileID: 3626107449781648285}
 --- !u!1 &6682875775822864180

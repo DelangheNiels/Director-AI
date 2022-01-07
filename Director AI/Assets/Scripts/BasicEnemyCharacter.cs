@@ -6,16 +6,18 @@ public class BasicEnemyCharacter : BasicCharacter
 {
     private GameObject _playerTarget = null;
     [SerializeField] private float _attackRange = 2.0f;
-    private float _attackTimer = 0;
-    [SerializeField] float _attackTime = 0.5f;
+    private float _attackTimer = 0.0f;
+    [SerializeField] float _attackTime = 0.3f;
+    PlayerCharacter _player = null;
 
 
     private void Start()
     {
         //expensive method, use with caution
-        PlayerCharacter player = FindObjectOfType<PlayerCharacter>();
+        _player = FindObjectOfType<PlayerCharacter>();
+        
 
-        if (player) _playerTarget = player.gameObject;
+        if (_player) _playerTarget = _player.gameObject;
     }
 
     private void Update()
@@ -46,6 +48,7 @@ public class BasicEnemyCharacter : BasicCharacter
             _attackTimer += Time.deltaTime;
             if(_attackTimer >= _attackTime)
             {
+                _player.Intensity += 0.05f;
                 _shootingBehaviour.PrimaryFire();
                 _shootingBehaviour.Reload();
                 _attackTimer = 0;
@@ -57,11 +60,5 @@ public class BasicEnemyCharacter : BasicCharacter
         {
             _attackTimer = 0;
         }
-    }
-
-    const string KILL_METHODNAME = "Kill";
-    void Kill()
-    {
-        Destroy(gameObject);
     }
 }

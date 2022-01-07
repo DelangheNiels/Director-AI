@@ -25,6 +25,22 @@ public class Health : MonoBehaviour
     {
         if(this.tag == "Enemy")
         {
+          
+            PlayerCharacter player = FindObjectOfType<PlayerCharacter>();
+            if(player != null)
+            {
+                float distance = (player.transform.position - transform.position).sqrMagnitude;
+                if ( distance <= 5.0f )
+                {
+                    player.Intensity += 0.03f;
+                }
+
+                else if(distance <= 20.0f)
+                {
+                    player.Intensity += 0.01f;
+                }
+            }
+            
             DirectorAIBehavior.Instance.DecreaseEnemiesAlive();
         }
         Destroy(gameObject);
