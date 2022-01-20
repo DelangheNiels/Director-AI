@@ -16,6 +16,11 @@ public class ShootingBehaviour : MonoBehaviour
     private BasicWeapon _primaryGun = null;
     private BasicWeapon _secondaryGun = null;
 
+    public BasicWeapon Weapon
+    {
+        get { return _primaryGun; }
+    }
+
     void Awake()
     {
         //spawn guns

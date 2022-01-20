@@ -13,6 +13,11 @@ public class Health : MonoBehaviour
         _currentHealth = _startHealth;
     }
 
+    public int CurrentHealth
+    {
+        get { return _currentHealth; }
+    }
+
     public void Damage(int amount)
     {
         _currentHealth -= amount;

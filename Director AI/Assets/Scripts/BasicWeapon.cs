@@ -11,6 +11,11 @@ public class BasicWeapon : MonoBehaviour
     private int _currentAmmo = 50;
     private float _fireTimer = 0.0f;
 
+    public int CurrentAmmo
+    {
+        get { return _currentAmmo; }
+    }
+
     private void Awake()
     {
         _currentAmmo = _clipSize;
