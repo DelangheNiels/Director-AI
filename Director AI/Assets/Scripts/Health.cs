@@ -16,6 +16,7 @@ public class Health : MonoBehaviour
     public int CurrentHealth
     {
         get { return _currentHealth; }
+        set { _currentHealth = value; }
     }
 
     public void Damage(int amount)
