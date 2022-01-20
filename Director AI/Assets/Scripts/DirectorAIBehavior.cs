@@ -48,12 +48,20 @@ public class DirectorAIBehavior : MonoBehaviour
     }
     #endregion
 
-    List<Spawnpoint> _spawnPoints = new List<Spawnpoint>();
+    List<Spawnpoint> _normalSpawnPoints = new List<Spawnpoint>();
+    List<Spawnpoint> _specialSpawnPoints = new List<Spawnpoint>();
+
     PlayerCharacter _playerCharacter = null;
+
     [SerializeField] int minimumAmountOfSpawnedEnemiesRange;
     [SerializeField] int maxAmountOfSpawnedEnemiesRange;
+
     int _amountOfEnemiesToSpawn;
     int _spawnedEnemies;
+
+    int _amountOfEnemiesToSpawnInPeak = 30;
+    int _amountOfSpecialEnemiesToSpawnInPeak = 2;
+
     enum State { buildUp, peak, relax };
     private State _state = State.buildUp;
 
@@ -70,7 +78,9 @@ public class DirectorAIBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _spawnPoints = SpawnpointManager.Instance.SpawnPoints;
+        _normalSpawnPoints = SpawnpointManager.Instance.NormalSpawnPoints;
+        _specialSpawnPoints = SpawnpointManager.Instance.SpecialSpawnPoints;
+
         _playerCharacter = FindObjectOfType<PlayerCharacter>();
 
         _amountOfEnemiesToSpawn = Random.Range(minimumAmountOfSpawnedEnemiesRange, maxAmountOfSpawnedEnemiesRange);
@@ -112,9 +122,9 @@ public class DirectorAIBehavior : MonoBehaviour
         {
             while (_spawnedEnemies < _amountOfEnemiesToSpawn)
             {
-                int index = Random.Range(0, _spawnPoints.Count);
+                int index = Random.Range(0, _normalSpawnPoints.Count);
                 _spawnedEnemies++;
-                _spawnPoints[index].Spawn();
+                _normalSpawnPoints[index].Spawn();
                 
             }
             _spawnTimer = 0;
@@ -129,7 +139,7 @@ public class DirectorAIBehavior : MonoBehaviour
             Debug.Log("In peak");
         }
 
-        if(_state == State.peak)
+        if(_state == State.peak && _spawnedEnemies == 0)
         {
             _state = State.relax;
             Debug.Log("In relax state");
@@ -145,12 +155,16 @@ public class DirectorAIBehavior : MonoBehaviour
             if(_playerCharacter.Intensity - _oldIntensity < 0.20)
             {
                 _amountOfEnemiesToSpawn += 8;
+                _amountOfEnemiesToSpawnInPeak += 5;
+                _amountOfSpecialEnemiesToSpawnInPeak += 2;
                 Debug.Log("Increase difficulty");
             }
 
             else
             {
                 _amountOfEnemiesToSpawn -= 4;
+                _amountOfEnemiesToSpawnInPeak -= 3;
+                _amountOfSpecialEnemiesToSpawnInPeak -= 1;
                 Debug.Log("Decrease difficulty");
             }
 
@@ -161,15 +175,26 @@ public class DirectorAIBehavior : MonoBehaviour
 
     private void SpawnEnemiesInPeak()
     {
-        int extraToSpawn = 40;
-        int spawned = 0;
-        while (spawned < extraToSpawn)
-        {
-            int index = Random.Range(0, _spawnPoints.Count);
-            _spawnedEnemies++;
-            _spawnPoints[index].Spawn();
-            spawned++;
+        int normalEnemiesSpawned = 0;
+        int specialEnemiesSpawned = 0;
 
+        Debug.Log("Spaning " + _amountOfSpecialEnemiesToSpawnInPeak + " special enemies in peak and " + _amountOfEnemiesToSpawnInPeak + " normal enemies");
+
+        while (normalEnemiesSpawned < _amountOfEnemiesToSpawnInPeak)
+        {
+            int index = Random.Range(0, _normalSpawnPoints.Count);
+            _spawnedEnemies++;
+            _normalSpawnPoints[index].Spawn();
+            normalEnemiesSpawned++;
+
+        }
+
+        while(specialEnemiesSpawned < _amountOfSpecialEnemiesToSpawnInPeak)
+        {
+            int index = Random.Range(0, _specialSpawnPoints.Count);
+            _spawnedEnemies++;
+            _specialSpawnPoints[index].Spawn();
+            specialEnemiesSpawned++;
         }
     }
 }

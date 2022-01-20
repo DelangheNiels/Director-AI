@@ -46,27 +46,54 @@ public class SpawnpointManager : MonoBehaviour
     }
     #endregion
 
-    private List<Spawnpoint> _spawnPoints = new List<Spawnpoint>();
-    public List<Spawnpoint> SpawnPoints
+    private List<Spawnpoint> _normalSpawnPoints = new List<Spawnpoint>();
+    private List<Spawnpoint> _specialSpawnPoints = new List<Spawnpoint>();
+
+    public List<Spawnpoint> NormalSpawnPoints
     {
-        get { return _spawnPoints; }
+        get { return _normalSpawnPoints; }
+    }
+
+    public List<Spawnpoint> SpecialSpawnPoints
+    {
+        get { return _specialSpawnPoints; }
     }
 
     public void RegisterSpawnPoint(Spawnpoint spawnpoint)
     {
-        if(!_spawnPoints.Contains(spawnpoint))
+        if(spawnpoint.IsSpecial == false)
         {
-            _spawnPoints.Add(spawnpoint);
+            if (!_normalSpawnPoints.Contains(spawnpoint))
+            {
+                _normalSpawnPoints.Add(spawnpoint);
+            }
         }
+
+        else
+        {
+            if (!_specialSpawnPoints.Contains(spawnpoint))
+            {
+                _specialSpawnPoints.Add(spawnpoint);
+            }
+        }
+        
     }
 
     public void UnRegisterSpawnPoint(Spawnpoint spawnpoint)
     {
-        _spawnPoints.Remove(spawnpoint);
+        if(spawnpoint.IsSpecial == false)
+        {
+            _normalSpawnPoints.Remove(spawnpoint);
+        }
+        else
+        {
+            _specialSpawnPoints.Remove(spawnpoint);
+        }
+        
     }
 
     private void Update()
     {
-        _spawnPoints.RemoveAll(s => s == null);
+        _normalSpawnPoints.RemoveAll(s => s == null);
     }
 }
