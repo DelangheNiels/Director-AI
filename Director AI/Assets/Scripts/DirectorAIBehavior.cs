@@ -65,6 +65,8 @@ public class DirectorAIBehavior : MonoBehaviour
 
     float _oldIntensity = 0.0f;
 
+    int _spawnEnemiesInPeakCounter = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -87,6 +89,15 @@ public class DirectorAIBehavior : MonoBehaviour
             SpawnEnemies();
             StateChange();
             ChangeDifficulty();
+        }
+
+        if(_state == State.peak)
+        {
+            if(_spawnEnemiesInPeakCounter == 0)
+            {
+                _spawnEnemiesInPeakCounter++;
+                SpawnEnemiesInPeak();
+            }
         }
     }
 
@@ -117,6 +128,12 @@ public class DirectorAIBehavior : MonoBehaviour
             _state = State.peak;
             Debug.Log("In peak");
         }
+
+        if(_state == State.peak)
+        {
+            _state = State.relax;
+            Debug.Log("In relax state");
+        }
     }
 
     private void ChangeDifficulty()
@@ -139,6 +156,20 @@ public class DirectorAIBehavior : MonoBehaviour
 
             _oldIntensity = _playerCharacter.Intensity;
             _difficultyChangeTimer = 0;
+        }
+    }
+
+    private void SpawnEnemiesInPeak()
+    {
+        int extraToSpawn = 40;
+        int spawned = 0;
+        while (spawned < extraToSpawn)
+        {
+            int index = Random.Range(0, _spawnPoints.Count);
+            _spawnedEnemies++;
+            _spawnPoints[index].Spawn();
+            spawned++;
+
         }
     }
 }
