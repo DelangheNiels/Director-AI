@@ -2819,7 +2819,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1972896693670946703, guid: 1327882520a6a7249b5b455f032ee30b, type: 3}
       propertyPath: _startHealth
-      value: 100
+      value: 10000000
       objectReference: {fileID: 0}
     - target: {fileID: 3949134253646850353, guid: 1327882520a6a7249b5b455f032ee30b, type: 3}
       propertyPath: _movementSpeed

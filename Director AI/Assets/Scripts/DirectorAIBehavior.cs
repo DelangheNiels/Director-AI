@@ -56,11 +56,14 @@ public class DirectorAIBehavior : MonoBehaviour
     [SerializeField] int minimumAmountOfSpawnedEnemiesRange;
     [SerializeField] int maxAmountOfSpawnedEnemiesRange;
 
-    int _amountOfEnemiesToSpawn;
-    int _spawnedEnemies;
+    int _amountOfEnemiesToSpawn = 0;
+    int _spawnedEnemies = 0;
 
-    int _amountOfEnemiesToSpawnInPeak = 30;
+    int _amountOfEnemiesToSpawnInPeak = 12;
     int _amountOfSpecialEnemiesToSpawnInPeak = 2;
+
+    float _peakSpawnTimer = 0.0f;
+    float _peakSpawnTime = 3.0f;
 
     enum State { buildUp, peak, relax };
     private State _state = State.buildUp;
@@ -69,7 +72,7 @@ public class DirectorAIBehavior : MonoBehaviour
     [SerializeField]float _spawnTime = 5.0f;
 
     float _difficultyChangeTimer = 0.0f;
-    float _difficultyChangeTime = 10.0f;
+    float _difficultyChangeTime = 15.0f;
 
     float _oldIntensity = 0.0f;
 
@@ -103,17 +106,33 @@ public class DirectorAIBehavior : MonoBehaviour
 
         if(_state == State.peak)
         {
-            if(_spawnEnemiesInPeakCounter == 0)
+            Debug.Log(_spawnedEnemies);
+            _peakSpawnTimer += Time.deltaTime;
+
+            if (_spawnEnemiesInPeakCounter < 3)
             {
-                _spawnEnemiesInPeakCounter++;
-                SpawnEnemiesInPeak();
+               if(_peakSpawnTimer >= _peakSpawnTime)
+                {
+                    SpawnEnemiesInPeak();
+                    _spawnEnemiesInPeakCounter++;
+                    _peakSpawnTimer = 0;
+                }
+                
             }
+
+            StateChange();
+        }
+
+        if(_state == State.relax)
+        {
+            Debug.Log(_spawnedEnemies);
+            Debug.Log("Relax");
         }
     }
 
     public void DecreaseEnemiesAlive()
     {
-        _spawnedEnemies = _spawnedEnemies - 1;
+        --_spawnedEnemies;
     }
 
     private void SpawnEnemies()
@@ -123,7 +142,7 @@ public class DirectorAIBehavior : MonoBehaviour
             while (_spawnedEnemies < _amountOfEnemiesToSpawn)
             {
                 int index = Random.Range(0, _normalSpawnPoints.Count);
-                _spawnedEnemies++;
+                ++_spawnedEnemies;
                 _normalSpawnPoints[index].Spawn();
                 
             }
@@ -139,7 +158,7 @@ public class DirectorAIBehavior : MonoBehaviour
             Debug.Log("In peak");
         }
 
-        if(_state == State.peak && _spawnedEnemies == 0)
+        if(_state == State.peak && _spawnedEnemies <= 3)
         {
             _state = State.relax;
             Debug.Log("In relax state");
@@ -152,18 +171,18 @@ public class DirectorAIBehavior : MonoBehaviour
         if(_difficultyChangeTimer >= _difficultyChangeTime)
         {
             Debug.Log("old: " + _oldIntensity + " new: " + _playerCharacter.Intensity);
-            if(_playerCharacter.Intensity - _oldIntensity < 0.20)
+            if(_playerCharacter.Intensity - _oldIntensity < 0.25f)
             {
                 _amountOfEnemiesToSpawn += 8;
-                _amountOfEnemiesToSpawnInPeak += 5;
-                _amountOfSpecialEnemiesToSpawnInPeak += 2;
+                _amountOfEnemiesToSpawnInPeak += 3;
+                _amountOfSpecialEnemiesToSpawnInPeak += 1;
                 Debug.Log("Increase difficulty");
             }
 
             else
             {
                 _amountOfEnemiesToSpawn -= 4;
-                _amountOfEnemiesToSpawnInPeak -= 3;
+                _amountOfEnemiesToSpawnInPeak -= 2;
                 _amountOfSpecialEnemiesToSpawnInPeak -= 1;
                 Debug.Log("Decrease difficulty");
             }
@@ -183,7 +202,7 @@ public class DirectorAIBehavior : MonoBehaviour
         while (normalEnemiesSpawned < _amountOfEnemiesToSpawnInPeak)
         {
             int index = Random.Range(0, _normalSpawnPoints.Count);
-            _spawnedEnemies++;
+            ++_spawnedEnemies;
             _normalSpawnPoints[index].Spawn();
             normalEnemiesSpawned++;
 
@@ -192,7 +211,7 @@ public class DirectorAIBehavior : MonoBehaviour
         while(specialEnemiesSpawned < _amountOfSpecialEnemiesToSpawnInPeak)
         {
             int index = Random.Range(0, _specialSpawnPoints.Count);
-            _spawnedEnemies++;
+            ++_spawnedEnemies;
             _specialSpawnPoints[index].Spawn();
             specialEnemiesSpawned++;
         }

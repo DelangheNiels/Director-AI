@@ -36,12 +36,12 @@ public class Health : MonoBehaviour
             if(player != null)
             {
                 float distance = (player.transform.position - transform.position).sqrMagnitude;
-                if ( distance <= 5.0f )
+                if ( distance <= 8.0f )
                 {
-                    player.Intensity += 0.03f;
+                    player.Intensity += 0.04f;
                 }
 
-                else if(distance <= 20.0f)
+                else if(distance <= 30.0f)
                 {
                     player.Intensity += 0.01f;
                 }

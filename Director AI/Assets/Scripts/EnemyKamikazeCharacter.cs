@@ -52,6 +52,7 @@ public class EnemyKamikazeCharacter : BasicCharacter
     const string KILL_METHODNAME = "Kill";
     void Kill()
     {
+        //DirectorAIBehavior.Instance.DecreaseEnemiesAlive();
         Destroy(gameObject);
     }
 }

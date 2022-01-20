@@ -27,6 +27,8 @@ public class HealthPackBehavior : MonoBehaviour
                     _player.GetComponent<Health>().CurrentHealth = 100;
                 }
 
+                _player.Intensity -= 0.1f;
+
                 Destroy(gameObject);
             }
         }
