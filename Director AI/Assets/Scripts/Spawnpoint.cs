@@ -15,6 +15,11 @@ public class Spawnpoint : MonoBehaviour
         get { return _isSpecial; }
     }
 
+    public GameObject SpawnObject
+    {
+        get { return SpawnTemplate; }
+    }
+
     private void OnEnable()
     {
         SpawnpointManager.Instance.RegisterSpawnPoint(this);
@@ -28,5 +33,6 @@ public class Spawnpoint : MonoBehaviour
     public GameObject Spawn()
     {
         return Instantiate(SpawnTemplate, transform.position, transform.rotation);
+
     }
 }

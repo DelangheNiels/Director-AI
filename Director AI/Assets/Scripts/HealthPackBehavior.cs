@@ -7,6 +7,7 @@ public class HealthPackBehavior : MonoBehaviour
     int _health = 20;
     PlayerCharacter _player = null;
     // Start is called before the first frame update
+
     void Start()
     {
         _player = FindObjectOfType<PlayerCharacter>();
@@ -28,6 +29,7 @@ public class HealthPackBehavior : MonoBehaviour
                 }
 
                 _player.Intensity -= 0.1f;
+                DirectorAIBehavior.Instance.DecreaseHealthPacksInLevel();
 
                 Destroy(gameObject);
             }

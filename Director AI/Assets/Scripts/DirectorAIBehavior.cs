@@ -50,6 +50,7 @@ public class DirectorAIBehavior : MonoBehaviour
 
     List<Spawnpoint> _normalSpawnPoints = new List<Spawnpoint>();
     List<Spawnpoint> _specialSpawnPoints = new List<Spawnpoint>();
+    List<Spawnpoint> _healthSpawnPoints = new List<Spawnpoint>();
 
     PlayerCharacter _playerCharacter = null;
 
@@ -78,11 +79,23 @@ public class DirectorAIBehavior : MonoBehaviour
 
     int _spawnEnemiesInPeakCounter = 0;
 
+    int _healthPacksInLevel = 0;
+    int _MaxHealthPacks = 1;
+
+    float _spawnHealthTimer = 20.0f;
+    float _spawnHealthTime = 20.0f;
+
+    int amountOfDecreases = 0;
+
+    float _relaxTimer = 0.0f;
+    float _relaxTime = 10.0f;
+
     // Start is called before the first frame update
     void Start()
     {
         _normalSpawnPoints = SpawnpointManager.Instance.NormalSpawnPoints;
         _specialSpawnPoints = SpawnpointManager.Instance.SpecialSpawnPoints;
+        _healthSpawnPoints = SpawnpointManager.Instance.HealthSpawnPoints;
 
         _playerCharacter = FindObjectOfType<PlayerCharacter>();
 
@@ -102,6 +115,13 @@ public class DirectorAIBehavior : MonoBehaviour
             SpawnEnemies();
             StateChange();
             ChangeDifficulty();
+
+            _spawnHealthTimer += Time.deltaTime;
+
+            if(_spawnHealthTimer >= _spawnHealthTime && _healthPacksInLevel < _MaxHealthPacks)
+            {
+                SpawnHealthPack();
+            }
         }
 
         if(_state == State.peak)
@@ -126,13 +146,30 @@ public class DirectorAIBehavior : MonoBehaviour
         if(_state == State.relax)
         {
             Debug.Log(_spawnedEnemies);
+            SpawnHealthPack();
             Debug.Log("Relax");
+            _playerCharacter.Intensity = 0.0f;
+            _MaxHealthPacks = 1;
+
+            _relaxTimer += Time.deltaTime;
+           if(_relaxTimer >= _relaxTime)
+            {
+                _relaxTimer = 0;
+                _spawnedEnemies = 0;
+                _state = State.buildUp;
+                Debug.Log("Back to build up");
+            }
         }
     }
 
     public void DecreaseEnemiesAlive()
     {
         --_spawnedEnemies;
+    }
+
+    public void DecreaseHealthPacksInLevel()
+    {
+        --_healthPacksInLevel;
     }
 
     private void SpawnEnemies()
@@ -185,6 +222,12 @@ public class DirectorAIBehavior : MonoBehaviour
                 _amountOfEnemiesToSpawnInPeak -= 2;
                 _amountOfSpecialEnemiesToSpawnInPeak -= 1;
                 Debug.Log("Decrease difficulty");
+                ++amountOfDecreases;
+
+                if(amountOfDecreases == 2)
+                {
+                    ++_MaxHealthPacks;
+                }
             }
 
             _oldIntensity = _playerCharacter.Intensity;
@@ -215,5 +258,21 @@ public class DirectorAIBehavior : MonoBehaviour
             _specialSpawnPoints[index].Spawn();
             specialEnemiesSpawned++;
         }
+    }
+
+    private void SpawnHealthPack()
+    {
+        Debug.Log("spawn health");
+       if(_healthPacksInLevel == 0)
+        {
+            _healthSpawnPoints[0].Spawn();
+        }
+
+       else
+        {
+            _healthSpawnPoints[1].Spawn();
+        }
+        ++_healthPacksInLevel;
+       
     }
 }

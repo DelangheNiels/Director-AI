@@ -48,6 +48,7 @@ public class SpawnpointManager : MonoBehaviour
 
     private List<Spawnpoint> _normalSpawnPoints = new List<Spawnpoint>();
     private List<Spawnpoint> _specialSpawnPoints = new List<Spawnpoint>();
+    private List<Spawnpoint> _healthSpawnPoints = new List<Spawnpoint>();
 
     public List<Spawnpoint> NormalSpawnPoints
     {
@@ -59,36 +60,60 @@ public class SpawnpointManager : MonoBehaviour
         get { return _specialSpawnPoints; }
     }
 
+    public List<Spawnpoint> HealthSpawnPoints
+    {
+        get { return _healthSpawnPoints; }
+    }
+
     public void RegisterSpawnPoint(Spawnpoint spawnpoint)
     {
-        if(spawnpoint.IsSpecial == false)
+        if(spawnpoint.tag == "Health")
         {
-            if (!_normalSpawnPoints.Contains(spawnpoint))
+            if (!_healthSpawnPoints.Contains(spawnpoint))
             {
-                _normalSpawnPoints.Add(spawnpoint);
+                _healthSpawnPoints.Add(spawnpoint);
             }
         }
-
         else
         {
-            if (!_specialSpawnPoints.Contains(spawnpoint))
+            if (spawnpoint.IsSpecial == false)
             {
-                _specialSpawnPoints.Add(spawnpoint);
+                if (!_normalSpawnPoints.Contains(spawnpoint))
+                {
+                    _normalSpawnPoints.Add(spawnpoint);
+                }
+            }
+
+            else
+            {
+                if (!_specialSpawnPoints.Contains(spawnpoint))
+                {
+                    _specialSpawnPoints.Add(spawnpoint);
+                }
             }
         }
+        
         
     }
 
     public void UnRegisterSpawnPoint(Spawnpoint spawnpoint)
     {
-        if(spawnpoint.IsSpecial == false)
+        if(spawnpoint.tag == "Health")
         {
-            _normalSpawnPoints.Remove(spawnpoint);
+            _healthSpawnPoints.Remove(spawnpoint);
         }
         else
         {
-            _specialSpawnPoints.Remove(spawnpoint);
+            if (spawnpoint.IsSpecial == false)
+            {
+                _normalSpawnPoints.Remove(spawnpoint);
+            }
+            else
+            {
+                _specialSpawnPoints.Remove(spawnpoint);
+            }
         }
+       
         
     }
 
