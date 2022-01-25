@@ -1,7 +1,11 @@
 # Director-AI
 This is a small Unity game with a director ai that controlls the enemies.
 This project is to learn how a director ai works an how to make one.
+
+
 ![2022-01-25 11-48-37](https://user-images.githubusercontent.com/97293849/150974634-b46ddd11-cb0f-4475-b1e5-5856e8ce858c.gif)
+
+
 
 # What is a director ai and what does it do
 
