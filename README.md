@@ -4,7 +4,11 @@ This project is to learn how a director ai works an how to make one.
 
 # What is a director ai and what does it do
 
-The director ai will controll the amount of enemies that can be in the game at a given time. It will also monitor the player to change the difficulty of the game depending on how the player is doing. The director ai also has three states he can be in. These are, build up, peak and relax state. The purpose of the director ai is to make sure that no playthrough feels the same as the last one.
+The director ai will controll the amount of enemies that can be in the game at a given time. It will also monitor the player to change the difficulty of the game depending on how the player is doing. The purpose of the director ai is to make sure that no playthrough feels the same as the last one. The director ai also has three states he can be in. These are 
+  -build up
+  -peak
+  -relax
+  
 
 ### Recording information about the player
 A director ai records information about what the player is doing in the game. He keeps track where the player is in the level, what action the player is doing and how well the player is doing that action. The director ai will adapt the game world based on this information. 
@@ -25,5 +29,17 @@ When the player's stress level reaches a certain treshold the director ai will s
 
 ### Relax
 When the ai enters the relax state, the player can rest for a bit. In this state there won't be any enemies spawning to give the player some rest and heal up. The player's stress level gets reset. The relax state normaly lasts for 30 - 45 seconds before the ai enters the buil up state again. When the player starts sprinting or shooting and the relax time is not yet over, the ai will also change back to the build up state.
+
+# Conclusion
+  -Ai monitors player.
+  -Change the game world depending on how the player does things.
+  -Works realy good with survival type games.
+  
+ # Used references
+ I based my game a lot on how they did it in the Left 4 dead games: https://left4dead.fandom.com/wiki/The_Director
+ 
+ some useful videos
+  -https://www.youtube.com/watch?v=Mnt5zxb8W0Y
+  -https://www.youtube.com/watch?v=WbHMxo11HcU
 
 
