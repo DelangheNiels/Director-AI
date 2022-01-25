@@ -17,7 +17,7 @@ A director ai records information about what the player is doing in the game. He
 When the player is having a hard time getting through the level, the ai will make the game a little less intense so that the player can have a little break but still feels that he accomplished something when he finishes the level.
 
 ### Enforcing the game rules
-The director ai will also enforce the game rules upon the player. For example, the player can't just stand still for a couple of minutes without anything happening around him.
+The director ai will also enforce the game rules upon the player. For example, the player can't just stand still for a couple of minutes without anything happening around him. Another example is that when the player tries to be stealth, some of the enemies will notice the player when he goes past them. This is done to unsure that the player can't just sneak the whole level without getting into any action.
 
 # The three different states of the director ai
 
