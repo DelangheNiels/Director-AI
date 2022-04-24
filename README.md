@@ -9,7 +9,7 @@ This project is to learn how a director ai works an how to make one.
 
 # What is a Director AI and what does it do
 
-The director ai will controll everything that has to do with the level. This can be the amount of enemies that can be in the game at a given time if you are playing a survival game. The amount of ammo drops or spawns in the level when you are playing a shooter and how the level will look. For example, the amount of pathways that are open and blocked for the player. A director AI can also control the amount of enemies that can attack the player at a time. These are only some small examples. A Director AI can be used for everything that you want to be controlled in the level of your game. 
+The director ai will controll everything that has to do with the level. This can be the amount of enemies that can be in the game at a given time if you are playing a survival game. The amount of ammo drops or spawns in the level when you are playing a shooter and how the level will look. For example, the amount of pathways that are open and blocked for the player. A director ai can also control the amount of enemies that can attack the player at a time. These are only some small examples. A director ai can be used for everything that you want to be controlled in the level of your game. 
 It will also monitor the player to change the difficulty of the game depending on how the player is doing. The purpose of the director ai is to make sure that no playthrough feels the same as the last one. The director ai also has three states it can be in. These are:
   - build up
   - peak
