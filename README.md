@@ -2,11 +2,6 @@
 This is a small Unity game with a director ai that controlls the enemies.
 This project is to learn how a director ai works an how to make one.
 
-
-![2022-01-25 11-48-37](https://user-images.githubusercontent.com/97293849/150974634-b46ddd11-cb0f-4475-b1e5-5856e8ce858c.gif)
-
-
-
 # What is a Director AI and what does it do
 
 The director ai will controll everything that has to do with the level. This can be the amount of enemies that can be in the game at a given time if you are playing a survival game. The amount of ammo drops or spawns in the level when you are playing a shooter and how the level will look. For example, the amount of pathways that are open and blocked for the player. A director ai can also control the amount of enemies that can attack the player at a time. These are only some small examples. A director ai can be used for everything that you want to be controlled in the level of your game. 
@@ -32,11 +27,19 @@ The director ai will also enforce the game rules upon the player. For example, t
 ### Build up
 The build up is the state where the director ai is monitoring the player. It keeps track of the "stress" of the player. This stress will increase when the player gets hit by an enemy or when he kills an enemy that is close to him. In my implementation, every 15 seconds the ai will check what the difference is between the stress of the player at that point and the previous check. When this is below a certain treshold, the ai will increase the amount of enemies it can have alive in the level at a certain time. When the difference is above that threshold, the ai will decrease the amount of enemies. In my game there are also some health packs that can spawn. The director ai also controlles the spawn of these. When the player is doing well, the amount of health packs that spawn will be less than when the player is having a hard time.
 
+![lower difficulty](https://user-images.githubusercontent.com/97293849/164987754-311ae7ab-cac1-4040-aad7-54e982d63647.gif)
+
 ### Peak
 When the player's stress level reaches a certain treshold the director ai will switch from the build up state to the peak state. In the peak state, the intensity increases and the ai makes one last play by spawning an extra number of enemies. This amount of enemies will depend on how well the player was doing in the build up state. During the peak, the ai won't spawn any more enemies once all the extra enemies are spawned. During this state, the health packs won't spawn either. When the player has defeated all the enemies, the director ai's state will change to the relax state.
 
+![peak](https://user-images.githubusercontent.com/97293849/164988000-f045d0c6-d64f-46bc-bae7-98881a7f1f5b.gif)
+
+
 ### Relax
 When the ai enters the relax state, the player can rest for a bit. In this state there won't be any enemies spawning to give the player some rest and time to heal up. The player's stress level gets reset. The relax state normaly lasts for 30 - 45 seconds before the ai enters the build up state again. When the player starts sprinting or shooting and the relax time is not over yet, the ai will also change back to the build up state.
+
+![rest](https://user-images.githubusercontent.com/97293849/164988072-08414fe4-b48a-4ce4-be71-152f23465bed.gif)
+
 
 # Conclusion
   - Ai monitors player.
